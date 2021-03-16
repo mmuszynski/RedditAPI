@@ -1,3 +1,3 @@
 # RedditAPI
 
-A Swift Package that connects to the [Reddit API](https://www.reddit.com/dev/api)
+A Swift Package that connects to the [Reddit API](https://www.reddit.com/dev/api), currently allowing read-only access to subreddit and user information.
