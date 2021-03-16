@@ -56,10 +56,14 @@ public struct Listing: Codable {
     }
 }
 
+/// Conformance to `RandomAccessCollection`
+///
+/// Data for the collection is contained in the `ListingData` of the `Listing` object, and these are forwarded to an array that represents the elements of the of the `Collection`.
 extension Listing: RandomAccessCollection {
     public typealias Element = Thing
     public typealias Index = Array<Element>.Index
 
+    /// Forwards chiild elements from the `ListingData`
     private var elements: [Element] {
         return self.data.children
     }
@@ -77,61 +81,71 @@ extension Listing: RandomAccessCollection {
     }
 }
 
-struct ListingData: Codable {
+/// The data contained in the `Listing`
+private struct ListingData: Codable {
     typealias Element = Thing
     
+    /// A token that is used to help prevent CSRF
     var modhash: String
+    
+    /// The number of items returned, often different than the limit provided
     var dist: Int?
+    
+    /// The fullname of the `Thing` that is used to provide the next `Listing` page
     var after: String?
+    
+    /// The fullname of the `Thing` that is used to provide the previous `Listing` page
     var before: String?
+    
+    /// The `Thing`s which are contained in the `Listing`,
     var children: [Element]
 }
 
-extension Array where Element == Listing {
-    public var galleryImageURLs: [URL] {
-        self.reduce([]) { (urls, listing) -> [URL] in
-            return urls + listing.galleryImageURLs
-        }
-    }
-}
+//extension Array where Element == Listing {
+//    public var galleryImageURLs: [URL] {
+//        self.reduce([]) { (urls, listing) -> [URL] in
+//            return urls + listing.galleryImageURLs
+//        }
+//    }
+//}
 
-extension Listing {
-    public enum DecodeError: Error {
-        case unknown
-        case multiple(_ errors: [Error])
-    }
-    
-    /// Decodes a `Listing` from a reddit JSON endpoint
-    /// - Parameter data: JSON data representing a Reddit `Listing`
-    /// - Throws: `DecodeError` if any issues arise, including `DecodeError.multiple` if more than one decoding error occurs
-    /// - Returns: `Array<Listing>`
-    ///
-    /// Normally, a `Listing` returned from the API consists of a JSON dictionary, but in some cases (such as a gallery link), the data returned is an `Array<Listing>`. To accommodate both of these possibilities, this method returns an `Array`, even if there is only one value expected.
-    public static func decode(from data: Data) throws -> Array<Listing> {
-        var errors: [Error] = []
-        
-        //Try to decode a listing and return it in an array
-        do {
-            return try [JSONDecoder().decode(Listing.self, from: data)]
-        } catch {
-            errors.append(error)
-        }
-        
-        //Try to decode the array itself
-        do {
-            return try JSONDecoder().decode(Array<Listing>.self, from: data)
-        } catch {
-            errors.append(error)
-        }
-        
-        //Throw errors if we get here
-        //Can a single error even be thrown? Who knows.
-        if errors.isEmpty {
-            throw DecodeError.unknown
-        } else if errors.count == 1 {
-            throw errors.first!
-        } else {
-            throw DecodeError.multiple(errors)
-        }
-    }
-}
+//extension Listing {
+//    public enum DecodeError: Error {
+//        case unknown
+//        case multiple(_ errors: [Error])
+//    }
+//    
+//    /// Decodes a `Listing` from a reddit JSON endpoint
+//    /// - Parameter data: JSON data representing a Reddit `Listing`
+//    /// - Throws: `DecodeError` if any issues arise, including `DecodeError.multiple` if more than one decoding error occurs
+//    /// - Returns: `Array<Listing>`
+//    ///
+//    /// Normally, a `Listing` returned from the API consists of a JSON dictionary, but in some cases (such as a gallery link), the data returned is an `Array<Listing>`. To accommodate both of these possibilities, this method returns an `Array`, even if there is only one value expected.
+//    public static func decode(from data: Data) throws -> Array<Listing> {
+//        var errors: [Error] = []
+//        
+//        //Try to decode a listing and return it in an array
+//        do {
+//            return try [JSONDecoder().decode(Listing.self, from: data)]
+//        } catch {
+//            errors.append(error)
+//        }
+//        
+//        //Try to decode the array itself
+//        do {
+//            return try JSONDecoder().decode(Array<Listing>.self, from: data)
+//        } catch {
+//            errors.append(error)
+//        }
+//        
+//        //Throw errors if we get here
+//        //Can a single error even be thrown? Who knows.
+//        if errors.isEmpty {
+//            throw DecodeError.unknown
+//        } else if errors.count == 1 {
+//            throw errors.first!
+//        } else {
+//            throw DecodeError.multiple(errors)
+//        }
+//    }
+//}
