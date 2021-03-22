@@ -19,7 +19,7 @@ public struct Thing: Codable {
         case unknown = "??"
     }
     
-    private var data: ThingData
+    internal var data: ThingData
 
     public var kind: String
     public var type: ThingType { ThingType(string: kind) }
@@ -34,7 +34,12 @@ public struct Thing: Codable {
     public var author: String {
         return data.author
     }
-    
+    public var permalink: URL? {
+        let path = data.permalink
+        guard path != "" else { return nil }
+        return RedditAPI.jsonUrl(fromPermalink: path)
+    }
+        
     var galleryImageURLs: [URL] {
         guard self.data.is_gallery == true else { return [] }
         return self.data.media_metadata?.values.compactMap ({ (metadata) -> URL? in
@@ -48,33 +53,4 @@ public struct Thing: Codable {
             return nil
         }) ?? []
     }
-}
-
-struct ThingData: Codable {
-    var url: String?
-    var author: String
-    var name: String
-    var permalink: String
-    var subreddit: String?
-    var is_gallery: Bool?
-    var title: String?
-    var subreddit_name_prefixed: String?
-    var media_metadata: [String: MediaMetadata]?
-}
-
-struct MediaMetadata: Codable {
-    var status: String
-    var e: String?
-    var m: String?
-    var o: [ImageMetadata]?
-    var p: [ImageMetadata]?
-    var s: ImageMetadata?
-}
-
-struct ImageMetadata: Codable {
-    var y: Int
-    var x: Int
-    var u: String?
-    var gif: String?
-    var mp4: String?
 }

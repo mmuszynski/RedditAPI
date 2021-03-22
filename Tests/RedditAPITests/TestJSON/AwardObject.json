@@ -1,0 +1,35 @@
+{
+    "giver_coin_reward": null,
+    "subreddit_id": null,
+    "is_new": false,
+    "days_of_drip_extension": 0,
+    "coin_price": 500,
+    "id": "gid_2",
+    "penny_donate": null,
+    "award_sub_type": "GLOBAL",
+    "coin_reward": 100,
+    "icon_url": "https://www.redditstatic.com/gold/awards/icon/gold_512.png",
+    "days_of_premium": 7,
+    "tiers_by_required_awardings": null,
+    "resized_icons": [{
+    "url": "https://www.redditstatic.com/gold/awards/icon/gold_16.png",
+    "width": 16,
+    "height": 16
+    }, {
+    "url": "https://www.redditstatic.com/gold/awards/icon/gold_32.png",
+    "width": 32,
+    "height": 32
+    }, {
+    "url": "https://www.redditstatic.com/gold/awards/icon/gold_48.png",
+    "width": 48,
+    "height": 48
+    }, {
+    "url": "https://www.redditstatic.com/gold/awards/icon/gold_64.png",
+    "width": 64,
+    "height": 64
+    }, {
+    "url": "https://www.redditstatic.com/gold/awards/icon/gold_128.png",
+    "width": 128,
+    "height": 128
+    }]
+}

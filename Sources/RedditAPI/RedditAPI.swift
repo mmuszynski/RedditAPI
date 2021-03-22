@@ -25,6 +25,13 @@ extension URL {
 /// Namespace for various Reddit API helpers
 enum RedditAPI {
     
+    private static var baseURLComponents: URLComponents = {
+        var components = URLComponents()
+        components.host = "www.reddit.com"
+        components.scheme = "https"
+        return components
+    }()
+    
     /// Errors that arise when forming a `URL`
     enum URLError: Error {
         case couldNotFormURL
@@ -91,9 +98,7 @@ enum RedditAPI {
             throw URLError.couldNotFormURL
         }
         
-        var components = URLComponents()
-        components.host = "www.reddit.com"
-        components.scheme = "https"
+        var components = self.baseURLComponents
         
         if [.top, .controversial].contains(mode) {
             let items = [modeLimit.queryItem]
@@ -125,5 +130,15 @@ enum RedditAPI {
         return returnURL
     }
     
+    public static func url(fromPermalink permalink: String) -> URL? {
+        var baseComponents = self.baseURLComponents
+        baseComponents.path = permalink
+        return baseComponents.url
+    }
     
+    public static func jsonUrl(fromPermalink permalink: String) -> URL? {
+        var baseComponents = self.baseURLComponents
+        baseComponents.path = permalink
+        return baseComponents.url?.jsonURL
+    }
 }
