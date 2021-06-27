@@ -9,13 +9,13 @@ import XCTest
 import Combine
 @testable import RedditAPI
 
-final class ListingPublisherTests: AsynchronousTestCase {
+final class RedditListingPublisherTests: AsynchronousTestCase {
     
-    /// Uses the `ListingPublisher` to load data from a Subreddit
+    /// Uses the `RedditListingPublisher` to load data from a Subreddit
     func testSubredditPublisher() {
         testAsynchronously(timeout: 10) { hold in
             do {
-                try ListingPublisher(forSubreddit: "hockey")
+                try RedditListingPublisher(forSubreddit: "hockey")
                     .sink(receiveCompletion: { (completion) in
                         switch completion {
                         case .failure(let error):
@@ -34,11 +34,11 @@ final class ListingPublisherTests: AsynchronousTestCase {
         }
     }
     
-    /// Uses the `ListingPublisher` to load data from a User
+    /// Uses the `RedditListingPublisher` to load data from a User
     func testUserPublisher() {
         testAsynchronously(timeout: 10) { hold in
             do {
-                try ListingPublisher(forUser: "mmuszynski-ios")
+                try RedditListingPublisher(forUser: "mmuszynski-ios")
                     .sink(receiveCompletion: { (completion) in
                         switch completion {
                         case .failure(let error):
@@ -58,7 +58,7 @@ final class ListingPublisherTests: AsynchronousTestCase {
     }
     
     
-    /// Uses the `ListingPublisher` to load data from a User post
+    /// Uses the `RedditListingPublisher` to load data from a User post
     /// This returns the first post from a the subreddit for user mmuszynski-ios
     /// The post consists of the actual post and the comments, which results in an array of two Listings
     ///
@@ -68,10 +68,10 @@ final class ListingPublisherTests: AsynchronousTestCase {
     func testPermalinkPublisher() {
         testAsynchronously(timeout: 10) { hold in
             do {
-                try ListingPublisher(forUser: "mmuszynski-ios")
-                    .flatMap({ (array) -> ListingPublisher in
+                try RedditListingPublisher(forUser: "mmuszynski-ios")
+                    .flatMap({ (array) -> RedditListingPublisher in
                         let url = array.first![0].permalink!
-                        return ListingPublisher(url: url)
+                        return RedditListingPublisher(url: url)
                     })
                     .sink(receiveCompletion: { (completion) in
                         switch completion {
