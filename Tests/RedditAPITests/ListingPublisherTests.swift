@@ -57,7 +57,6 @@ final class RedditListingPublisherTests: AsynchronousTestCase {
         }
     }
     
-    
     /// Uses the `RedditListingPublisher` to load data from a User post
     /// This returns the first post from a the subreddit for user mmuszynski-ios
     /// The post consists of the actual post and the comments, which results in an array of two Listings

@@ -71,4 +71,22 @@ final class ListingDecodeTests: XCTestCase, JSONBasedTestCase {
         let data = try! Data(contentsOf: urlForJSONResource(named: "AwardObject")!)
         XCTAssertNoThrow(try JSONDecoder().decode(ThingData.Award.self, from: data))
     }
+    
+    func testError20210705() {
+        let data = try! Data(contentsOf: urlForJSONResource(named: "HockeyError20210705")!)
+        XCTAssertNoThrow(try JSONDecoder().decode(Listing.self, from: data))
+    }
+    
+    func testTiersByRequiredAwardingsFailure() {
+        let data = try! Data(contentsOf: urlForJSONResource(named: "tiers_by_required_awardings_failure")!)
+        XCTAssertNoThrow(try JSONDecoder().decode(Listing.self, from: data))
+    }
+    
+    func testHasVideoLinks() throws {
+        try withJSON(named: "the_end_do_be_near") { data in
+            let listing = try Listing.decoded(from: data)
+            XCTAssertNotNil(listing.first?.things.first?.data.secure_media?.first)
+            print(listing.first?.things.first?.videoURL)
+        }
+    }
 }

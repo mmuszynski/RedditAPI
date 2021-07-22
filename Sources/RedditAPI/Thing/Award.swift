@@ -20,7 +20,7 @@ extension ThingData {
         var coin_reward: Int
         var icon_url: String
         var days_of_premium: Int
-        var tiers_by_required_awardings: String?
+        var tiers_by_required_awardings: [String: AwardTier]?
         var resized_icons: [Award.Icon]
         
         struct Icon: Codable {
@@ -28,5 +28,17 @@ extension ThingData {
             var width: Int
             var height: Int
         }
+    }
+    
+    struct AwardTier: Codable {
+        var resized_icons: Array<AwardIcon>
+        var awardings_required: Int
+        var static_icon: AwardIcon
+    }
+    
+    struct AwardIcon: Codable {
+        var url: URL
+        var width: Int
+        var height: Int
     }
 }

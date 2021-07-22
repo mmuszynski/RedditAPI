@@ -39,6 +39,11 @@ public struct Thing: Codable {
         guard path != "" else { return nil }
         return RedditAPI.jsonUrl(fromPermalink: path)
     }
+    
+    public var videoURL: URL? {
+        guard let urlString = data.secure_media?.first?.value.fallback_url else { return nil }
+        return URL(string: urlString)
+    }
         
     var galleryImageURLs: [URL] {
         guard self.data.is_gallery == true else { return [] }

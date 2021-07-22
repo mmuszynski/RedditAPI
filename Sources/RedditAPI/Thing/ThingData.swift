@@ -70,7 +70,7 @@ struct ThingData: Codable {
     var is_robot_indexable: Bool?
     var is_self: Bool?
     var is_video: Bool?
-    var likes: Int?
+    var likes: Bool?
     var link_flair_background_color: String?
     var link_flair_css_class: String?
     var link_flair_richtext: [RichText]?
@@ -103,7 +103,7 @@ struct ThingData: Codable {
     //var report_reasons: null
     var saved: Bool
     var score: Int
-    var secure_media: SecureMedia?
+    var secure_media: [String: SecureMediaOembed]?
     var secure_media_embed: SecureMediaEmbed?
     var selftext: String?
     var selftext_html: String?
@@ -255,18 +255,18 @@ struct ImageMetadata: Codable {
     var mp4: String?
 }
 
-struct RedditVideo: Codable {
-    var bitrate_kbps: Int
-    var fallback_url: String
-    var height: Int
-    var width: Int
-    var scrubber_media_url: String
-    var dash_url: String
-    var duration: Int
-    var hls_url: String
-    var is_gif: Bool
-    var transcoding_status: String
-}
+//struct RedditVideo: Codable {
+//    var bitrate_kbps: Int
+//    var fallback_url: String
+//    var height: Int
+//    var width: Int
+//    var scrubber_media_url: String
+//    var dash_url: String
+//    var duration: Int
+//    var hls_url: String
+//    var is_gif: Bool
+//    var transcoding_status: String
+//}
 
 struct Media: Codable {
     var type: String
