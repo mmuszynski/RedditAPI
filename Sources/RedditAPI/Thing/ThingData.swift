@@ -103,8 +103,18 @@ struct ThingData: Codable {
     //var report_reasons: null
     var saved: Bool
     var score: Int
-    var secure_media: [String: SecureMediaOembed]?
+    
+    /*
+     Secure Media sucks, as it sometimes returns a Dictionary<String, SecureMediaOembed> object (e.g. redditvideo), but sometimes returns more specific information.
+     
+     So far, reddit video is the only one that I have encountered that is a [String : SecureMediaOembed]
+     */
+    var secure_media: SecureMedia?
     var secure_media_embed: SecureMediaEmbed?
+    
+    var reddit_video: SecureMediaOembed?
+    
+    
     var selftext: String?
     var selftext_html: String?
     var send_replies: Bool
@@ -199,7 +209,17 @@ struct ThingData: Codable {
         self.quarantine = try container.decodeIfPresent(.quarantine)
         self.saved = try container.decode(.saved)
         self.score = try container.decode(.score)
-        self.secure_media = try container.decodeIfPresent(.secure_media)
+        
+        do {
+            //Try to decode a dictionary in case this is RedditVideo
+            let secureMediaDictionary = try container.decode(Dictionary<String, ThingData.SecureMediaOembed>.self, forKey: .secure_media)
+            //if that worked, it should have a redditVideo key
+            self.reddit_video = secureMediaDictionary["reddit_video"]
+        } catch {
+            //fallback if necessary on the secure media
+            self.secure_media = try container.decodeIfPresent(.secure_media)
+        }
+        
         self.secure_media_embed = try container.decodePossibleEmptyObject(.secure_media_embed)
         self.selftext = try container.decodeIfPresent(.selftext)
         self.selftext_html = try container.decodeIfPresent(.selftext_html)
@@ -255,18 +275,18 @@ struct ImageMetadata: Codable {
     var mp4: String?
 }
 
-//struct RedditVideo: Codable {
-//    var bitrate_kbps: Int
-//    var fallback_url: String
-//    var height: Int
-//    var width: Int
-//    var scrubber_media_url: String
-//    var dash_url: String
-//    var duration: Int
-//    var hls_url: String
-//    var is_gif: Bool
-//    var transcoding_status: String
-//}
+struct RedditVideo: Codable {
+    var bitrate_kbps: Int
+    var fallback_url: String
+    var height: Int
+    var width: Int
+    var scrubber_media_url: String
+    var dash_url: String
+    var duration: Int
+    var hls_url: String
+    var is_gif: Bool
+    var transcoding_status: String
+}
 
 struct Media: Codable {
     var type: String

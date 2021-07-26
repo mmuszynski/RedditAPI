@@ -8,8 +8,12 @@
 import Foundation
 
 extension ThingData {
+    struct SecureMedia: Codable {
+        var type: String
+        var oembed: SecureMediaOembed
+    }
+    
     struct SecureMediaOembed: Codable {
-        //Required by oEmbed standard
         var url: String?
         var maxwidth: Int?
         var maxheight: Int?
@@ -26,14 +30,14 @@ extension ThingData {
         var cache_age: Int?
         var type: String?
         
-        var bitrate_kbps: Int
-        var fallback_url: String
-        var scrubber_media_url: String
-        var dash_url: String
-        var duration: Int
-        var hls_url: String
-        var is_gif: Bool
-        var transcoding_status: String
+        var bitrate_kbps: Int?
+        var fallback_url: String?
+        var scrubber_media_url: String?
+        var dash_url: String?
+        var duration: Int?
+        var hls_url: String?
+        var is_gif: Bool?
+        var transcoding_status: String?
     }
     
     struct SecureMediaEmbed: Codable {

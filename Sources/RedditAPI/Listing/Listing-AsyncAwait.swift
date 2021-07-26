@@ -13,6 +13,7 @@ internal extension Data {
     }
 }
 
+@available(iOSApplicationExtension 15.0, *)
 @available(macOS 12.0, *)
 extension Listing {
     public static func retrieve(from url: URL, debug: Bool = false) async throws -> [Listing] {

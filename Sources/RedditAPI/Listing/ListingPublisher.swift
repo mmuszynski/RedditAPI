@@ -7,6 +7,9 @@
 
 import Foundation
 import Combine
+import os
+
+fileprivate var logger = Logger(subsystem: "com.mmuszynski.redditapi", category: "ListingPublsiher")
 
 /// A one-shot `Publisher` that returns an array of reddit `Listing` objects.
 public struct RedditListingPublisher: Publisher {
@@ -19,11 +22,26 @@ public struct RedditListingPublisher: Publisher {
             .dataTaskPublisher(for: url)
             .map(\.data)
             .tryMap { data in
-                let listings = try Listing.decoded(from: data, debug: debug)
-                return listings.map { listing in
-                    var listing = listing
-                    listing.url = url
-                    return listing
+                if debug {
+                    logger.trace("Decoding listing for \(url)")
+                }
+                
+                do {
+                    let listings = try Listing.decoded(from: data, debug: debug)
+                    
+                    return listings.map { listing in
+                        var listing = listing
+                        listing.url = url
+                        return listing
+                    }
+                } catch {
+                    if debug {
+                        logger.critical("Error in \(url): \(error.localizedDescription)")
+                        logger.critical("\(String(bytes: data, encoding: .utf8) ?? "Unknown Data")")
+                        try! data.write(to: URL(fileURLWithPath: "/Users/mike/Desktop/errorData.json"))
+                    }
+                    
+                    throw error
                 }
             }
             .eraseToAnyPublisher()

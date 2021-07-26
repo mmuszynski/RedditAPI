@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import os
+
+fileprivate var logger = Logger(subsystem: "com.mmuszynski.redditapi", category: "Listing Decoder")
 
 extension Listing {
     public enum DecodeError: Error {
@@ -21,7 +24,7 @@ extension Listing {
     /// Normally, a `Listing` returned from the API consists of a JSON dictionary, but in some cases (such as a gallery link), the data returned is an `Array<Listing>`. To accommodate both of these possibilities, this method returns an `Array`, even if there is only one value expected.
     public static func decoded(from data: Data, debug: Bool = false) throws -> Array<Listing> {
         if debug {
-            print(String(bytes: data, encoding: .utf8) ?? "")
+            logger.trace("\(String(bytes: data, encoding: .utf8) ?? "Unknown Data")")
         }
         
         var errors: [Error] = []
@@ -51,10 +54,15 @@ extension Listing {
         //Throw errors if we get here
         //Can a single error even be thrown? Who knows.
         if errors.isEmpty {
+            logger.error("Unknown Decode error")
             throw DecodeError.unknown
         } else if errors.count == 1 {
+            logger.error("\(errors.first!.localizedDescription)")
             throw errors.first!
         } else {
+            for error in errors {
+                logger.error("\(error.localizedDescription)")
+            }
             throw DecodeError.multiple(errors)
         }
     }

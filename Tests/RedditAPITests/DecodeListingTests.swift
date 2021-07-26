@@ -82,11 +82,19 @@ final class ListingDecodeTests: XCTestCase, JSONBasedTestCase {
         XCTAssertNoThrow(try JSONDecoder().decode(Listing.self, from: data))
     }
     
-    func testHasVideoLinks() throws {
+    func testRedditVideo() throws {
         try withJSON(named: "the_end_do_be_near") { data in
             let listing = try Listing.decoded(from: data)
-            XCTAssertNotNil(listing.first?.things.first?.data.secure_media?.first)
-            print(listing.first?.things.first?.videoURL)
+            XCTAssertNotNil(listing.first?.things.first?.data.reddit_video)
+            XCTAssertNotNil(listing.first?.things.first?.videoURL)
+        }
+    }
+    
+    func testSecureMediaOembed() throws {
+        try withJSON(named: "secureMediaOembed") { data in
+            let listing = try Listing.decoded(from: data)
+            XCTAssertNotNil(listing.first?.things.first?.data.secure_media?.oembed)
+            XCTAssertNotNil(listing.first?.things.first?.videoURL)
         }
     }
 }

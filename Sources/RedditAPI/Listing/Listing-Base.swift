@@ -48,7 +48,7 @@ public struct Listing: Codable {
     ///
     /// - Parameter current: The link used to request this `Listing` slice
     /// - Returns: A `URL` that will return a `Listing` representing the next page or `nil` if no such page exists (such as when a subreddit's current posts have been exhasuted)
-    public func nextURL(after current: URL?) -> URL? {
+    public func nextURL(after current: URL? = nil) -> URL? {
         let current = current ?? self.url
         guard current != nil, let after = data.after, var components = URLComponents(string: current!.absoluteString) else {
             return nil

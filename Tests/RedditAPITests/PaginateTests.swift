@@ -37,4 +37,38 @@ final class PaginateTests: AsynchronousTestCase {
             }
         }
     
+    func testSecureMedia() throws {
+        testAsynchronously(timeout: 300) { wait in
+            let url = URL(string: "https://www.reddit.com/r/gifs/comments/opzh42/what_do_we_say_to_the_god_of_death")!.jsonURL
+            var finalURLs = [URL]()
+            RedditListingPublisher(url: url, debug: true)
+                .paginate(strategy: { listing in
+                    let first = listing.first
+                    if let next = first?.nextURL() {
+                        return RedditListingPublisher(url: next)
+                    } else {
+                        return nil
+                    }
+                })
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        XCTFail("\(error)")
+                    case .finished:
+                        print(finalURLs)
+                        break
+                    }
+                    wait.fulfill()
+                }, receiveValue: { listing in
+                    let newURLs = listing.reduce(Array<URL>()) { partialResult, nextListing in
+                        let urls = nextListing.compactMap(\.url)
+                        return partialResult + urls
+                    }
+                    print("Found \(newURLs.count) urls")
+                    finalURLs.append(contentsOf: newURLs)
+                })
+                .store(in: &cancellables)
+        }
+    }
+    
 }
