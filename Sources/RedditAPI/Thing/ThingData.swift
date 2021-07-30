@@ -7,22 +7,6 @@
 
 import Foundation
 
-fileprivate extension KeyedDecodingContainer {
-    private struct EmptyObject: Decodable {}
-    
-    func decodeIfPresent<T: Decodable>(_ key: K) throws -> T? {
-        return try self.decodeIfPresent(T.self, forKey: key)
-    }
-    
-    func decode<T: Decodable>(_ key: K) throws -> T {
-        return try self.decode(T.self, forKey: key)
-    }
-    
-    func decodePossibleEmptyObject<T: Decodable>(_ key: K) throws -> T? {        
-        return try? self.decode(T.self, forKey: key)
-    }
-}
-
 struct ThingData: Codable {
 
     var all_awardings: [Award]

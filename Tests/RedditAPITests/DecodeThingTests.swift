@@ -13,7 +13,7 @@ final class DecodeThingTests: XCTestCase, JSONBasedTestCase {
     func testLinkThing() throws {
         try withJSON(named: "t3_link") { data in
             let decoder = JSONDecoder()
-            XCTAssertNoThrow(try decoder.decode(Thing.self, from: data))
+            XCTAssertNoThrow(try decoder.decode(AnyThing.self, from: data))
         }
     }
     

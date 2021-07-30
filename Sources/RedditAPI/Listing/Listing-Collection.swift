@@ -11,7 +11,7 @@ import Foundation
 ///
 /// Data for the collection is contained in the `ListingData` of the `Listing` object, and these are forwarded to an array that represents the elements of the of the `Collection`.
 extension Listing: RandomAccessCollection {
-    public typealias Element = Thing
+    public typealias Element = AnyThing
     public typealias Index = Array<Element>.Index
 
     /// Forwards chiild elements from the `ListingData`
