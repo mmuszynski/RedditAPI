@@ -61,7 +61,9 @@ final class PaginateTests: AsynchronousTestCase {
                     wait.fulfill()
                 }, receiveValue: { listing in
                     let newURLs = listing.reduce(Array<URL>()) { partialResult, nextListing in
-                        let urls = nextListing.compactMap(\.url)
+                        let urls = nextListing
+                            .compactMap { $0 as? Link }
+                            .compactMap(\.url)
                         return partialResult + urls
                     }
                     print("Found \(newURLs.count) urls")

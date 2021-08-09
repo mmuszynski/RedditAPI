@@ -23,8 +23,8 @@ final class ListingDecodeTests: XCTestCase, JSONBasedTestCase {
                 //Test for secure_media_embed
                 //This value is returned as an empty object (e.g. {})
                 //This empty object is mapped to nil
-                XCTAssertNil(listing.first?.data.secure_media_embed)
-                XCTAssertNotNil(listing[1].data.secure_media_embed)
+                XCTAssertNil((listing.first as? Comment)?.data.secure_media_embed)
+                XCTAssertNotNil((listing[1] as? Comment)?.data.secure_media_embed)
                 
             } catch DecodingError.typeMismatch(let theType, let context) {
                 XCTFail("\(theType): \(context)")
@@ -85,16 +85,16 @@ final class ListingDecodeTests: XCTestCase, JSONBasedTestCase {
     func testRedditVideo() throws {
         try withJSON(named: "the_end_do_be_near") { data in
             let listing = try Listing.decoded(from: data)
-            XCTAssertNotNil(listing.first?.things.first?.data.reddit_video)
-            XCTAssertNotNil(listing.first?.things.first?.videoURL)
+            XCTAssertNotNil((listing.first?.things.first as? Comment)?.data.reddit_video)
+            XCTAssertNotNil((listing.first?.things.first as? Comment)?.videoURL)
         }
     }
     
     func testSecureMediaOembed() throws {
         try withJSON(named: "secureMediaOembed") { data in
             let listing = try Listing.decoded(from: data)
-            XCTAssertNotNil(listing.first?.things.first?.data.secure_media?.oembed)
-            XCTAssertNotNil(listing.first?.things.first?.videoURL)
+            XCTAssertNotNil((listing.first?.things.first as? Comment)?.data.secure_media?.oembed)
+            XCTAssertNotNil((listing.first?.things.first as? Comment)?.videoURL)
         }
     }
 }

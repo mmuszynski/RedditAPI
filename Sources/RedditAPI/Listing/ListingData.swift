@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import AppKit
 
 /// The data contained in the `Listing`
 internal struct ListingData: Decodable {
-    typealias Element = Thing
+    typealias Element = AnyThing
     
     /// A token that is used to help prevent CSRF
     var modhash: String
@@ -25,7 +24,7 @@ internal struct ListingData: Decodable {
     var before: String?
     
     /// The `Thing`s which are contained in the `Listing`,
-    var children: [AnyThing]
+    var children: [Element]
     
     enum CodingKeys: CodingKey {
         case modhash

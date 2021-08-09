@@ -69,7 +69,7 @@ final class RedditListingPublisherTests: AsynchronousTestCase {
             do {
                 try RedditListingPublisher(forUser: "mmuszynski-ios")
                     .flatMap({ (array) -> RedditListingPublisher in
-                        let url = array.first![0].permalink!
+                        let url = (array.first![0] as! Link).permalink!
                         return RedditListingPublisher(url: url)
                     })
                     .sink(receiveCompletion: { (completion) in

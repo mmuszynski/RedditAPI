@@ -27,7 +27,7 @@ public struct Listing: Decodable {
     /// The various data elements returned by the `Listing` JSON
     internal var data: ListingData
     
-    public var things: [AnyThing] { self.data.children }
+    public var things: [Thing] { self.data.children }
     
     /// The `URL` used to make the request for this `RedditListing`.
     public var url: URL?
