@@ -24,6 +24,9 @@ public struct AnyThing: Thing {
         } else if let link = try? container.decode(Link.self) {
             self = AnyThing(link)
             return
+        } else if let comment = try? container.decode(Comment.self) {
+            self = AnyThing(comment)
+            return
         }
         fatalError()
     }
