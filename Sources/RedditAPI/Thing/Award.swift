@@ -19,7 +19,7 @@ extension ThingData {
         var award_sub_type: String
         var coin_reward: Int
         var icon_url: String
-        var days_of_premium: Int
+        var days_of_premium: Int?
         var tiers_by_required_awardings: [String: AwardTier]?
         var resized_icons: [Award.Icon]
         
