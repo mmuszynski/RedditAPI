@@ -8,11 +8,11 @@
 import Foundation
 
 extension ThingData {
-    struct Award: Codable {
+    struct Award: Codable, Thing {
         var giver_coin_reward: Int?
         var subreddit_id: String?
         var is_new: Bool
-        var days_of_drip_extension: Int
+        var days_of_drip_extension: Int?
         var coin_price: Int
         var id: String
         var penny_donate: Int?
