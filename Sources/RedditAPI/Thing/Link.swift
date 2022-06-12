@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Link: Thing {
+public struct Link: Thing {
     internal var data: ThingData
-    var id: String {
+    public var id: String {
         return self.data.id
     }
    
