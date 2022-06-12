@@ -8,10 +8,14 @@
 
 import Foundation
 
-public protocol Thing: Decodable {}
+public protocol Thing: Decodable {
+    var id: String { get }
+}
 
 public struct AnyThing: Thing {
     var base: Thing
+    public var id: String { return self.base.id }
+    
     init<T: Thing>(_ thing: T) {
         self.base = thing
     }

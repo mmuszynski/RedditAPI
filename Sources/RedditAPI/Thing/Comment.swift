@@ -9,6 +9,9 @@ import Foundation
 
 public struct Comment: Thing {
     internal var data: ThingData
+    public var id: String {
+        return self.data.id
+    }
    
     public var kind: String
     public var type: ThingType { ThingType(string: kind) }

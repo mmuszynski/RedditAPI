@@ -9,6 +9,9 @@ import Foundation
 
 struct Link: Thing {
     internal var data: ThingData
+    var id: String {
+        return self.data.id
+    }
    
     public var kind: String
     public var type: ThingType { ThingType(string: kind) }
